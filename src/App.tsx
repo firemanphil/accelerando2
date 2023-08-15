@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { MidiEventRecorder } from './MidiRecorder';
+import {detectScales, noteToNoteName} from './utils';
+import { ScaleDisplay } from './ScaleDisplay'
+import { MockMidiProvider } from './MockMidiProvider';
+import ToggleMockMidi from './ToggleMockMidi';
 
 function App() {
+  const [scales, setScales] = useState<string[]>([]);
+  const midiRecorder = new MidiEventRecorder();
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MockMidiProvider>
+        <ToggleMockMidi/>
+        <ScaleDisplay scales={scales}/>
+      </MockMidiProvider>
+      
     </div>
   );
 }
 
 export default App;
+function prepareStartup() {
+  new MidiEventRecorder();
+  throw new Error('Function not implemented.');
+}
+
